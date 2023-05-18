@@ -18,3 +18,4 @@ let s = "@gd.com";
 let f = "**  &";
 emailCheck(s);
 fun(f);
+console.log("nsjx");
