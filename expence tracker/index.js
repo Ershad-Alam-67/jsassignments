@@ -1,123 +1,127 @@
-document.addEventListener("DOMContentLoaded", function () {
-  const add = document.getElementById("add")
-  add.addEventListener("click", addExpense)
+let array = []
+var temp = -1
+var tar = null
 
-  const storedExpenses = localStorage.getItem("expenses")
-  if (storedExpenses) {
-    const expenses = JSON.parse(storedExpenses)
-    expenses.forEach(function (expense) {
-      const { amount, description, category } = expense
-      createExpenseItem(amount, description, category)
-    })
+addEventListener("DOMContentLoaded", () => {
+  if (localStorage.getItem("array")) {
+    array = JSON.parse(localStorage.getItem("array"))
+    update()
   }
 })
 
-function createExpenseItem(amount, description, category) {
-  const li = document.createElement("li")
-  li.setAttribute("class", "row list-group-item d-flex")
+function add() {
+  const bbtt = document.getElementById("add")
+  if (bbtt.textContent != "Update") {
+    const am = document.querySelector("#am").value
+    const de = document.querySelector("#de").value
+    const ca = document.querySelector("#ca").value
 
-  const p = document.createElement("p")
-  p.setAttribute("class", "col-7")
-  p.textContent = `${amount} - ${category} - ${description}`
+    if (localStorage.getItem("array")) {
+      array = JSON.parse(localStorage.getItem("array"))
+      let obj = {
+        am: am,
+        de: de,
+        ca: ca,
+      }
+      array.push(obj)
+      const jn = JSON.stringify(array)
 
-  const div = document.createElement("div")
-  div.setAttribute("class", "col-5 d-flex justify-content-end")
+      localStorage.setItem("array", jn)
+    } else {
+      let obj = {
+        am: am,
+        de: de,
+        ca: ca,
+      }
+      array.push(obj)
+      const jn = JSON.stringify(array)
 
-  const edit = document.createElement("input")
-  edit.setAttribute("type", "button")
-  edit.setAttribute("value", "Edit")
-  edit.setAttribute("class", "btn btn-primary")
-  edit.addEventListener("click", editExpense)
-
-  const dlt = document.createElement("input")
-  dlt.setAttribute("type", "button")
-  dlt.setAttribute("value", "Delete")
-  dlt.setAttribute("class", "btn btn-danger")
-  dlt.addEventListener("click", deleteExpense)
-
-  div.appendChild(edit)
-  div.appendChild(dlt)
-  li.appendChild(p)
-  li.appendChild(div)
-
-  const ul = document.getElementById("ui")
-  ul.appendChild(li)
-}
-
-function addExpense() {
-  const am = document.getElementById("am").value
-  const de = document.getElementById("de").value
-  const ca = document.getElementById("ca").value
-
-  const expense = {
-    amount: am,
-    description: de,
-    category: ca,
+      localStorage.setItem("array", jn)
+    }
+    update()
+  } else {
+    update2()
+    update()
   }
-
-  const existingExpenses = JSON.parse(localStorage.getItem("expenses")) || []
-  existingExpenses.push(expense)
-  localStorage.setItem("expenses", JSON.stringify(existingExpenses))
-
-  document.getElementById("am").value = ""
-  document.getElementById("de").value = ""
-  document.getElementById("ca").value = "none"
-
-  createExpenseItem(am, de, ca)
 }
 
-function editExpense(e) {
-  const listItem = e.target.parentNode.parentNode
-  const p = listItem.querySelector("p")
-  const editValue = p.textContent.split("-").map((value) => value.trim())
-
-  const am = document.getElementById("am")
-  const de = document.getElementById("de")
-  const ca = document.getElementById("ca")
-
-  am.value = editValue[0]
-  ca.value = editValue[1]
-  de.value = editValue[2]
-
-  const add = document.getElementById("add")
-  add.textContent = "Update"
-  add.removeEventListener("click", addExpense)
-  add.addEventListener("click", updateExpense.bind(null, listItem))
-}
-
-function updateExpense(listItem) {
-  const am = document.getElementById("am").value
-  const de = document.getElementById("de").value
-  const ca = document.getElementById("ca").value
-
-  const p = listItem.querySelector("p")
-  p.textContent = `${am} - ${ca} - ${de}`
-
+function update() {
   const ul = document.getElementById("ui")
-  const index = Array.from(ul.children).indexOf(listItem)
-  const storedExpenses = JSON.parse(localStorage.getItem("expenses")) || []
-  storedExpenses[index].amount = am
-  storedExpenses[index].description = de
-  storedExpenses[index].category = ca
-  localStorage.setItem("expenses", JSON.stringify(storedExpenses))
-
-  document.getElementById("am").value = ""
-  document.getElementById("de").value = ""
-  document.getElementById("ca").value = "none"
-
-  const add = document.getElementById("add")
-  add.textContent = "Add Expense"
-  add.removeEventListener("click", updateExpense)
-  add.addEventListener("click", addExpense)
+  array = JSON.parse(localStorage.getItem("array")) // here is the main code to run
+  while (ul.firstChild) {
+    ul.removeChild(ul.firstChild)
+  }
+  array.forEach((e) => {
+    const li = document.createElement("li")
+    const p = document.createElement("p")
+    const div = document.createElement("div")
+    li.setAttribute("class", "row list-group-item d-flex")
+    p.setAttribute("class", "col-7")
+    div.setAttribute("class", "col-5 d-flex justify-content-end")
+    const btn1 = document.createElement("button")
+    const btn2 = document.createElement("button")
+    btn1.setAttribute("class", "btn btn-info")
+    btn2.setAttribute("class", "btn btn-danger")
+    btn1.setAttribute("onclick", "edit(event)")
+    btn2.setAttribute("onclick", "dlt(event)")
+    btn1.textContent = "Edit"
+    btn1.classList.add("edit")
+    btn2.textContent = "Delete"
+    btn2.classList.add("dlt")
+    p.textContent = `${e.am}+${e.ca}+${e.de}`
+    li.appendChild(p)
+    div.appendChild(btn1)
+    div.appendChild(btn2)
+    li.appendChild(div)
+    ul.appendChild(li)
+    console.log("update")
+  })
 }
+function edit(e) {
+  const a = e.target.parentNode.parentNode.children[0].textContent.split("+")
 
-function deleteExpense(e) {
-  const listItem = e.target.parentNode.parentNode
-  const ul = listItem.parentNode
-  ul.removeChild(listItem)
+  const am = document.querySelector("#am")
+  const de = document.querySelector("#de")
+  const ca = document.querySelector("#ca")
+  am.value = a[0]
+  de.value = a[2]
+  ca.value = a[1]
+  const b = document.getElementById("add")
+  b.textContent = "Update"
+  temp = Array.from(e.target.parentNode.parentNode.parentNode.children).indexOf(
+    e.target.parentNode.parentNode
+  )
+}
+function update2() {
+  console.log("called")
+  const am = document.querySelector("#am").value
+  const de = document.querySelector("#de").value
+  const ca = document.querySelector("#ca").value
+  const up = document.getElementById("ui")
+  console.log(up.children[temp].children[0].textContent)
+  up.children[temp].children[0].textContent = `${am}+${ca}+${de}`
+  console.log(up.children[temp].children[0].textContent)
+  const b = document.getElementById("add")
+  b.textContent = "Add Expense"
+  array = JSON.parse(localStorage.getItem("array"))
+  array[temp].am = am
+  array[temp].de = de
+  array[temp].ca = ca
+  const jn = JSON.stringify(array)
 
-  const index = Array.from(ul.children).indexOf(listItem)
-  const storedExpenses = JSON.parse(localStorage.getItem("expenses")) || []
-  storedExpenses.splice(index, 1)
-  localStorage.setItem("expenses", JSON.stringify(storedExpenses))
+  localStorage.setItem("array", jn)
+  update()
+}
+function dlt(e) {
+  temp = Array.from(e.target.parentNode.parentNode.parentNode.children).indexOf(
+    e.target.parentNode.parentNode
+  )
+  array = JSON.parse(localStorage.getItem("array"))
+  console.log(array)
+  array.splice(temp, 1)
+  console.log(array)
+  const jn = JSON.stringify(array)
+
+  localStorage.setItem("array", jn)
+  update()
 }
