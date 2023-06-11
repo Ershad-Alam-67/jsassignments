@@ -1,46 +1,49 @@
 let posts = []
 let lastActivitytime = 0
-function createPost(obj) {
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      posts.push(obj)
-      updateLastUserActivityTime()
-      resolve()
-    }, 1000)
-  })
+
+function delay(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms))
 }
-function updateLastUserActivityTime() {
-  return new Promise((res, rej) => {
-    setTimeout(() => {
-      lastActivitytime = new Date()
-      res()
-    }, 2000)
-  })
+
+async function createPost(obj) {
+  await delay(1000)
+  posts.push(obj)
+  await updateLastUserActivityTime()
 }
-function deletePost() {
-  return new Promise((res, rej) => {
-    setTimeout(() => {
-      if (posts.length > 0) {
-        posts.pop()
-        res()
-      } else {
-        rej("No post to delete")
-      }
-    }, 3000)
-  })
+
+async function updateLastUserActivityTime() {
+  await delay(2000)
+  lastActivitytime = new Date()
 }
-let p1 = createPost({ title: "POST1" })
-let p2 = createPost({ title: "POST2" })
-let p3 = createPost({ title: "POST3" })
-Promise.all([p1, p2, p3, updateLastUserActivityTime()])
-  .then(() => {
+
+async function deletePost() {
+  await delay(3000)
+  if (posts.length > 0) {
+    posts.pop()
+  } else {
+    throw new Error("No post to delete")
+  }
+}
+
+async function main() {
+  try {
+    let p1 = createPost({ title: "POST1" })
+    let p2 = createPost({ title: "POST2" })
+    let p3 = createPost({ title: "POST3" })
+
+    await Promise.all([p1, p2, p3, updateLastUserActivityTime()])
+
     posts.forEach((n) => console.log(n.title))
     console.log(lastActivitytime)
-    return deletePost() // Chain the next `then()` block
-  })
-  .then(() => {
+
+    await deletePost()
+
     posts.forEach((n) => {
       console.log(n.title)
     })
-  })
-  .catch((err) => console.log(err))
+  } catch (err) {
+    console.log(err)
+  }
+}
+
+main()
