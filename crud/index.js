@@ -10,7 +10,7 @@ function add(e) {
   }
   axios
     .post(
-      "https://crudcrud.com/api/0849db8c8a334139a131d8a9158a363e/ershad",
+      "https://crudcrud.com/api/e26a443d50be4413b15eb8fdf9a44b0f/ershad",
       obj
     )
     .then(() => console.log("posted"))
@@ -27,7 +27,7 @@ function update() {
   ui.innerHTML = ""
   let data = ""
   axios
-    .get("https://crudcrud.com/api/0849db8c8a334139a131d8a9158a363e/ershad")
+    .get("https://crudcrud.com/api/e26a443d50be4413b15eb8fdf9a44b0f/ershad")
     .then((res) => {
       data = res.data
       console.log(data)
