@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Photo Generator</title>
+    <style>
+      .container {
+        text-align: center;
+        margin-top: 50px;
+      }
+
+      textarea {
+        width: 300px;
+        height: 100px;
+      }
+
+      button {
+        padding: 10px 20px;
+        background-color: #4caf50;
+        color: white;
+        border: none;
+        cursor: pointer;
+      }
+    </style>
+    <script>
+      function generatePhoto() {
+        var text = document.getElementById("text-input").value
+        var canvas = document.createElement("canvas")
+        canvas.width = 400
+        canvas.height = 200
+        var context = canvas.getContext("2d")
+
+        // Generate the photo based on the text
+        context.fillStyle = "#FF0000"
+        context.fillRect(0, 0, canvas.width, canvas.height)
+        context.fillStyle = "#FFFFFF"
+        context.font = "30px Arial"
+        context.fillText(text, 50, 100)
+
+        // Create a temporary link to download the photo
+        var link = document.createElement("a")
+        link.href = canvas.toDataURL()
+        link.download = "generated_photo.png"
+        link.click()
+      }
+    </script>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Photo Generator</h1>
+      <textarea id="text-input" placeholder="Enter your text here"></textarea>
+      <br />
+      <button onclick="generatePhoto()">Generate and Download</button>
+    </div>
+  </body>
+</html>
