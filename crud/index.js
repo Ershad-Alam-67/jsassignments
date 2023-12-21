@@ -14,7 +14,7 @@ function add(e) {
 
   axios
     .post(
-      "https://crudcrud.com/api/bb3ead1ceafd4bb097cac8fdc23c8e34/ershad",
+      "https://crudcrud.com/api/16ea418c79e347babd5c08015d86d362/ershad",
       obj
     )
     .then(() => {
@@ -47,7 +47,7 @@ function update() {
   ui.innerHTML = ""
 
   axios
-    .get("https://crudcrud.com/api/bb3ead1ceafd4bb097cac8fdc23c8e34/ershad")
+    .get("https://crudcrud.com/api/16ea418c79e347babd5c08015d86d362/ershad")
     .then((res) => {
       const data = res.data
       console.log(data)
@@ -73,7 +73,7 @@ function update() {
 function deleteItem(liId) {
   const li = document.getElementById(liId)
   axios
-    .get("https://crudcrud.com/api/bb3ead1ceafd4bb097cac8fdc23c8e34/ershad")
+    .get("https://crudcrud.com/api/16ea418c79e347babd5c08015d86d362/ershad")
     .then((res) => {
       const data = res.data
       const index = liId.split("-")[1]
@@ -86,7 +86,7 @@ function deleteItem(liId) {
     .then((id) => {
       axios
         .delete(
-          `https://crudcrud.com/api/bb3ead1ceafd4bb097cac8fdc23c8e34/ershad/${id}`
+          `https://crudcrud.com/api/16ea418c79e347babd5c08015d86d362/ershad/${id}`
         )
 
         .then(() => {
@@ -99,7 +99,7 @@ function deleteItem(liId) {
 }
 function editItem(liId) {
   axios
-    .get("https://crudcrud.com/api/bb3ead1ceafd4bb097cac8fdc23c8e34/ershad")
+    .get("https://crudcrud.com/api/16ea418c79e347babd5c08015d86d362/ershad")
     .then((res) => {
       const data = res.data
       console.log(data)
@@ -138,7 +138,7 @@ function updt() {
   }
   axios
     .put(
-      `https://crudcrud.com/api/bb3ead1ceafd4bb097cac8fdc23c8e34/ershad/${tobeupdate}`,
+      `https://crudcrud.com/api/16ea418c79e347babd5c08015d86d362/ershads/${tobeupdate}`,
       obj
     )
 

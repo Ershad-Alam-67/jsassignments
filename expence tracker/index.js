@@ -47,7 +47,7 @@ function add() {
 
 function update() {
   const ul = document.getElementById("ui")
-  array = JSON.parse(localStorage.getItem("array")) // here is the main code to run
+  array = JSON.parse(localStorage.getItem("array"))
   while (ul.firstChild) {
     ul.removeChild(ul.firstChild)
   }
