@@ -11,6 +11,15 @@ const counterReducer = (state = { counter: 0 }, action) => {
       return {
         counter: state.counter - 1,
       }
+    case "increment2":
+      return {
+        counter: state.counter + 2,
+      }
+
+    case "decrement2":
+      return {
+        counter: state.counter - 2,
+      }
 
     default:
       return state
@@ -27,9 +36,6 @@ const counterSubscriber = () => {
 }
 
 store.subscribe(counterSubscriber)
-let i = 5
-while (i > 0) {
-  store.dispatch({ type: "increment" })
-  i--
-}
-store.dispatch({ type: "decrement" })
+
+store.dispatch({ type: "increment2" })
+store.dispatch({ type: "decrement2" })
